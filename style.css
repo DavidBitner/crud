@@ -1,0 +1,46 @@
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+.container {
+  display: grid;
+  min-height: 100vh;
+  grid-template-rows: 1fr min-content;
+}
+
+#btn-add-card-modal {
+  position: fixed;
+  bottom: 3rem;
+  right: 3rem;
+}
+
+.link {
+  text-decoration: none;
+  color: white;
+}
+
+.footer {
+  background-color: black;
+  color: white;
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  gap: 3rem;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  padding: 3rem;
+}
+
+.modal {
+  display: grid;
+  gap: 3rem;
+  padding: 3rem;
+}
