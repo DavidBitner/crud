@@ -27,6 +27,53 @@ html {
   color: white;
 }
 
+.cards {
+  padding: 3rem;
+  display: grid;
+  text-align: center;
+  gap: 3rem;
+  perspective: 150rem;
+  background-color: white;
+  grid-template-columns: repeat(5, 1fr);
+  align-content: space-around;
+}
+
+.card {
+  display: grid;
+  color: white;
+  grid-template-rows: 20rem;
+}
+
+.card__side {
+  display: grid;
+  transition: all 1s ease;
+  backface-visibility: hidden;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0px 0px 15px black;
+  grid-row: 1/-1;
+  grid-column: 1/-1;
+}
+
+.card__front {
+  background-color: black;
+  align-items: center;
+}
+
+.card__back {
+  transform: rotateY(180deg);
+  background-color: green;
+  align-items: center;
+}
+
+.card:hover .card__front {
+  transform: rotateY(-180deg);
+}
+
+.card:hover .card__back {
+  transform: rotateY(0);
+}
+
 .footer {
   background-color: black;
   color: white;
