@@ -61,16 +61,24 @@
 
     <button class="btn" id="btn-add-card-modal">+</button>
 
-    <div class="modal" id="modal-card">
-      <div class="modal__title">Modal Title</div>
-    </div>
+    <div class="overlay">
+      <div class="modal" id="modal-card">
+        <div class="modal__title">Modal Title</div>
+      </div>
 
-    <div class="modal" id="modal-new">
-      <input type="color" />
-      <input type="text" class="modal__input" />
-      <input type="text" class="modal__input" />
-      <button class="btn" id="btn-add-input">Add field</button>
-      <button class="btn" id="btn-add-card">Add Card</button>
+      <div class="modal" id="modal-new">
+        <div class="modal-grid">
+          <input type="text" class="modal__input" placeholder="field" />
+          <input type="text" class="modal__input" placeholder="value" />
+          <input type="text" class="modal__input" placeholder="field" />
+          <input type="text" class="modal__input" placeholder="value" />
+          <input type="text" class="modal__input" placeholder="field" />
+          <input type="text" class="modal__input" placeholder="value" />
+        </div>
+        <button class="btn" id="btn-add-input">Add field</button>
+        <button class="btn" id="btn-add-card">Add Card</button>
+        <input type="color" id="input-color"/>
+      </div>
     </div>
   </body>
 </html>
