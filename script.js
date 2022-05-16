@@ -4,7 +4,12 @@ const modalNew = document.querySelector(`#modal-new`);
 const modalNewBtn = document.querySelector(`#btn-add-card`);
 const modalNewField = document.querySelector(`#btn-add-input`);
 
-class Card {}
+class Card {
+  constructor(title, fields) {
+    this.title = title;
+    this.fields = fields;
+  }
+}
 
 class Cards {}
 
@@ -30,4 +35,3 @@ class UI {}
   </div>
 </div>
 */
-
