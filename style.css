@@ -118,11 +118,13 @@ html {
   background-color: black;
   color: white;
   margin: 3rem;
+  transition: all 0.2s;
 }
 
 #modal-card,
 #modal-new {
   visibility: hidden;
+  transform: scale(0);
 }
 
 .modal__title {
