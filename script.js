@@ -11,9 +11,62 @@ class Card {
   }
 }
 
-class Cards {}
+class Cards {
+  static getCards() {
+    let cards;
+    if (localStorage.getItem("cards") === null) {
+      cards = [];
+    } else {
+      cards = JSON.parse(localStorage.getItem("cards"));
+    }
+    return cards;
+  }
 
-class UI {}
+  static addCard(card) {
+    const cards = Cards.getCards();
+    cards.push(card);
+    localStorage.setItem("cards", JSON.stringify(cards));
+  }
+
+  static removeCard(title) {
+    const cards = Cards.getCards();
+    cards.forEach((card, index) => {
+      if (card.title === title) {
+        cards.splice(index, 1);
+      }
+    });
+    localStorage.setItem("cards", JSON.stringify(cards));
+  }
+}
+
+class UI {
+  static showOverlay() {
+    document.querySelector(`.overlay`).style.visibility = "visible";
+  }
+
+  static showModal(modal) {
+    modal.style.visibility = "visible";
+    modal.style.transform = "scale(1)";
+  }
+
+  static showModalNew() {
+    UI.showOverlay();
+    UI.showModal(document.querySelector(`#modal-new`));
+  }
+
+  static showModalCard() {
+    UI.showOverlay();
+    UI.showModal(document.querySelector(`#modal-card`));
+  }
+
+  static closeModal() {
+    document.querySelector(`.overlay`).style.visibility = "hidden";
+    document.querySelectorAll(".modal").forEach((modal) => {
+      modal.style.visibility = "hidden";
+      modal.style.transform = "scale(0)";
+    });
+  }
+}
 
 //Listeners
 //Update UI
@@ -35,3 +88,19 @@ class UI {}
   </div>
 </div>
 */
+
+document
+  .querySelector(`#btn-add-card-modal`)
+  .addEventListener("click", UI.showModalNew);
+
+window.addEventListener("click", (e) => {
+  const overlay = document.querySelector(`.overlay`);
+  console.log(e.target.parentElement.classList);
+  if (e.target == overlay) {
+    UI.closeModal();
+  }
+
+  if (e.target.parentElement.classList.contains("card")) {
+    UI.showModalCard();
+  }
+});
