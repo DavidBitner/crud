@@ -1,9 +1,3 @@
-const overlay = document.querySelector(`.overlay`);
-const modalCard = document.querySelector(`#modal-card`);
-const modalNew = document.querySelector(`#modal-new`);
-const modalNewBtn = document.querySelector(`#btn-add-card`);
-const modalNewField = document.querySelector(`#btn-add-input`);
-
 class Card {
   constructor(title, fields) {
     this.title = title;
@@ -66,28 +60,36 @@ class UI {
       modal.style.transform = "scale(0)";
     });
   }
+
+  static resetModalNew() {
+    const html = `
+      <input
+        type="text"
+        class="modal__input"
+        placeholder="Title"
+        id="modal-input-title"
+      />
+      <input type="text" class="modal__input" placeholder="Field" />
+      <input type="text" class="modal__input" placeholder="Text" />
+      <input type="text" class="modal__input" placeholder="Field" />
+      <input type="text" class="modal__input" placeholder="Text" />
+    `;
+
+    document.querySelector(`#modal-new-grid`).innerHTML = html;
+  }
+
+  static addInput() {
+    const modalNewGrid = document.querySelector(`#modal-new-grid`);
+    const inputField = document.createElement("input");
+    const inputText = document.createElement("input");
+    inputField.setAttribute("placeholder", "Field");
+    inputField.classList.add("modal__input");
+    inputText.setAttribute("placeholder", "Text");
+    inputText.classList.add("modal__input");
+    modalNewGrid.appendChild(inputField);
+    modalNewGrid.appendChild(inputText);
+  }
 }
-
-//Listeners
-//Update UI
-//Add Card
-//Remove Card
-//Edit Card
-
-/* CARD
-<div class="card">
-  <div class="card__front card__side">
-    <div class="card__title">Card front title</div>
-  </div>
-  <div class="card__back card__side">
-    <div class="card__title">Card back title</div>
-    <div class="card__field">Card back field</div>
-    <div class="card__field">Card back field</div>
-    <div class="card__field">Card back field</div>
-    <div class="card__field">Card back field</div>
-  </div>
-</div>
-*/
 
 document
   .querySelector(`#btn-add-card-modal`)
@@ -95,12 +97,14 @@ document
 
 window.addEventListener("click", (e) => {
   const overlay = document.querySelector(`.overlay`);
-  console.log(e.target.parentElement.classList);
   if (e.target == overlay) {
     UI.closeModal();
+    UI.resetModalNew();
   }
 
   if (e.target.parentElement.classList.contains("card")) {
     UI.showModalCard();
   }
 });
+
+document.querySelector(`#btn-add-input`).addEventListener("click", UI.addInput);
