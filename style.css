@@ -159,6 +159,11 @@ html {
   transform: scale(1.05);
 }
 
+#modal-input-title {
+  grid-column: 1/-1;
+  text-align: center;
+}
+
 #input-color {
   position: absolute;
   top: 2rem;
