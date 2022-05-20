@@ -1,7 +1,8 @@
 class Card {
-  constructor(title, fields) {
+  constructor(title, fields, values) {
     this.title = title;
     this.fields = fields;
+    this.values = values;
   }
 }
 
@@ -74,7 +75,6 @@ class UI {
       <input type="text" class="modal__input" placeholder="Field" />
       <input type="text" class="modal__input" placeholder="Text" />
     `;
-
     document.querySelector(`#modal-new-grid`).innerHTML = html;
   }
 
@@ -89,7 +89,39 @@ class UI {
     modalNewGrid.appendChild(inputField);
     modalNewGrid.appendChild(inputText);
   }
+
+  static setCard() {
+    const modalInputs = document.querySelectorAll(`.modal__input`);
+    const cardInputs = [];
+    const fields = [];
+    const values = [];
+
+    modalInputs.forEach((input) => {
+      cardInputs.push(input.value);
+    });
+
+    const checkInputs = cardInputs.some((input) => input == "");
+
+    if (checkInputs) {
+      alert("ERROR! Fill all inputs first");
+      return;
+    }
+
+    const title = cardInputs[0];
+
+    for (let index = 1; index < cardInputs.length; index++) {
+      if (index % 2 === 1) {
+        fields.push(cardInputs[index]);
+      } else {
+        values.push(cardInputs[index]);
+      }
+    }
+
+    Cards.addCard([title, fields, values]);
+  }
 }
+
+console.log(Cards.getCards())
 
 document
   .querySelector(`#btn-add-card-modal`)
@@ -108,3 +140,5 @@ window.addEventListener("click", (e) => {
 });
 
 document.querySelector(`#btn-add-input`).addEventListener("click", UI.addInput);
+
+document.querySelector(`#btn-add-card`).addEventListener("click", UI.setCard);
