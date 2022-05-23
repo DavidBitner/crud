@@ -32,6 +32,13 @@ class Cards {
     });
     localStorage.setItem("cards", JSON.stringify(cards));
   }
+
+  static resetCards() {
+    let cards = [
+      ["Card Example", ["Field 1", "Field 2"], ["Value 1", "Value 2"]],
+    ];
+    localStorage.setItem("cards", JSON.stringify(cards));
+  }
 }
 
 class UI {
@@ -111,17 +118,73 @@ class UI {
 
     for (let index = 1; index < cardInputs.length; index++) {
       if (index % 2 === 1) {
-        fields.push(cardInputs[index]);
+        fields.push(`${cardInputs[index]}:`);
       } else {
         values.push(cardInputs[index]);
       }
     }
 
     Cards.addCard([title, fields, values]);
+    UI.updateCards();
+    UI.closeModal();
+    UI.resetModalNew();
+  }
+
+  static updateCards() {
+    const cards = Cards.getCards();
+    const cardsContainer = document.querySelector(`.cards`);
+
+    cardsContainer.innerHTML = "";
+
+    cards.forEach((card) => {
+      const cardElement = document.createElement("div");
+      const cardFront = document.createElement("div");
+      const cardBack = document.createElement("div");
+      const cardTitleBack = document.createElement("div");
+      const cardTitleFront = document.createElement("div");
+      const cardGrid = document.createElement("div");
+      const cardEditBtn = document.createElement("button");
+
+      cardElement.classList.add("card");
+      cardFront.classList.add("card__front", "card__side");
+      cardBack.classList.add("card__back", "card__side");
+      cardTitleBack.classList.add("card__title");
+      cardTitleFront.classList.add("card__title");
+      cardGrid.classList.add("card__grid");
+      cardEditBtn.classList.add("btn");
+      cardEditBtn.classList.add("btn-edit");
+
+      cardTitleBack.innerText = card[0];
+      cardTitleFront.innerText = card[0];
+      cardEditBtn.innerText = "Edit";
+
+      const fields = card[1];
+      const values = card[2];
+
+      for (let index = 0; index < fields.length; index++) {
+        const cardField = document.createElement("div");
+        const cardValue = document.createElement("div");
+
+        cardField.classList.add("card__field");
+        cardValue.classList.add("card__field");
+
+        cardField.innerText = fields[index];
+        cardValue.innerText = values[index];
+
+        cardGrid.appendChild(cardField);
+        cardGrid.appendChild(cardValue);
+      }
+
+      cardBack.appendChild(cardTitleBack);
+      cardBack.appendChild(cardGrid);
+      cardBack.appendChild(cardEditBtn);
+      cardFront.appendChild(cardTitleFront);
+      cardElement.appendChild(cardFront);
+      cardElement.appendChild(cardBack);
+      cardsContainer.appendChild(cardElement);
+    });
   }
 }
-
-console.log(Cards.getCards())
 
 document
   .querySelector(`#btn-add-card-modal`)
@@ -134,7 +197,7 @@ window.addEventListener("click", (e) => {
     UI.resetModalNew();
   }
 
-  if (e.target.parentElement.classList.contains("card")) {
+  if (e.target.classList.contains("btn-edit")) {
     UI.showModalCard();
   }
 });
@@ -142,3 +205,5 @@ window.addEventListener("click", (e) => {
 document.querySelector(`#btn-add-input`).addEventListener("click", UI.addInput);
 
 document.querySelector(`#btn-add-card`).addEventListener("click", UI.setCard);
+
+document.addEventListener("DOMContentLoaded", UI.updateCards);
