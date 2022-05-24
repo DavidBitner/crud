@@ -47,14 +47,23 @@
 
     <div class="overlay">
       <div class="modal" id="modal-card">
-        <div class="modal__title">Modal Title</div>
-        <div class="modal-grid">
-          <div class="modal__field">Modal Field</div>
-          <div class="modal__field">Modal Field</div>
-          <div class="modal__field">Modal Field</div>
-          <div class="modal__field">Modal Field</div>
-          <div class="modal__field">Modal Field</div>
-          <div class="modal__field">Modal Field</div>
+        <!-- <div class="modal-grid" id="modal-edit-grid">
+          <input
+            type="text"
+            class="modal__input"
+            placeholder="Title"
+            id="modal-input-title"
+          />
+          <input type="text" class="modal__input" placeholder="Field" />
+          <input type="text" class="modal__input" placeholder="Text" />
+          <input type="text" class="modal__input" placeholder="Field" />
+          <input type="text" class="modal__input" placeholder="Text" />
+        </div> -->
+        <div class="btns">
+          <button class="btn" id="btn-card-remove-input">Remove Field</button>
+          <button class="btn" id="btn-card-add-input">Add field</button>
+          <button class="btn" id="btn-delete-card">Delete</button>
+          <button class="btn" id="btn-save-card">Save</button>
         </div>
       </div>
 
@@ -71,8 +80,12 @@
           <input type="text" class="modal__input" placeholder="Field" />
           <input type="text" class="modal__input" placeholder="Text" />
         </div>
-        <button class="btn" id="btn-add-input">Add field</button>
-        <button class="btn" id="btn-add-card">Add Card</button>
+
+        <div class="btns">
+          <button class="btn" id="btn-new-remove-input">Remove field</button>
+          <button class="btn" id="btn-new-add-input">Add field</button>
+          <button class="btn" id="btn-add-card">Add Card</button>
+        </div>
       </div>
     </div>
   </body>
