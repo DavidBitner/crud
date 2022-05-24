@@ -23,13 +23,9 @@ class Cards {
     localStorage.setItem("cards", JSON.stringify(cards));
   }
 
-  static removeCard(title) {
+  static removeCard(index) {
     const cards = Cards.getCards();
-    cards.forEach((card, index) => {
-      if (card.title === title) {
-        cards.splice(index, 1);
-      }
-    });
+    cards.splice(index, 1);
     localStorage.setItem("cards", JSON.stringify(cards));
   }
 
@@ -42,6 +38,13 @@ class Cards {
 }
 
 class UI {
+  static populateModalCard(index) {
+    const cards = Cards.getCards();
+    const card = cards[index];
+
+    console.log(card);
+  }
+
   static showOverlay() {
     document.querySelector(`.overlay`).style.visibility = "visible";
   }
@@ -85,16 +88,27 @@ class UI {
     document.querySelector(`#modal-new-grid`).innerHTML = html;
   }
 
-  static addInput() {
-    const modalNewGrid = document.querySelector(`#modal-new-grid`);
+  static addInput(gridElement) {
     const inputField = document.createElement("input");
     const inputText = document.createElement("input");
     inputField.setAttribute("placeholder", "Field");
     inputField.classList.add("modal__input");
     inputText.setAttribute("placeholder", "Text");
     inputText.classList.add("modal__input");
-    modalNewGrid.appendChild(inputField);
-    modalNewGrid.appendChild(inputText);
+    gridElement.appendChild(inputField);
+    gridElement.appendChild(inputText);
+  }
+
+  static removeInput(gridElement) {
+    const inputs = gridElement.querySelectorAll(".modal__input");
+
+    if (inputs.length == 3) {
+      alert(`Card need to have at least one field and value`);
+      return;
+    }
+
+    inputs[inputs.length - 2].remove();
+    inputs[inputs.length - 1].remove();
   }
 
   static setCard() {
@@ -136,7 +150,7 @@ class UI {
 
     cardsContainer.innerHTML = "";
 
-    cards.forEach((card) => {
+    cards.forEach((card, index) => {
       const cardElement = document.createElement("div");
       const cardFront = document.createElement("div");
       const cardBack = document.createElement("div");
@@ -153,6 +167,8 @@ class UI {
       cardGrid.classList.add("card__grid");
       cardEditBtn.classList.add("btn");
       cardEditBtn.classList.add("btn-edit");
+
+      cardEditBtn.setAttribute("id", `${index}`);
 
       cardTitleBack.innerText = card[0];
       cardTitleFront.innerText = card[0];
@@ -186,6 +202,8 @@ class UI {
   }
 }
 
+document.addEventListener("DOMContentLoaded", UI.updateCards);
+
 document
   .querySelector(`#btn-add-card-modal`)
   .addEventListener("click", UI.showModalNew);
@@ -198,12 +216,37 @@ window.addEventListener("click", (e) => {
   }
 
   if (e.target.classList.contains("btn-edit")) {
+    UI.populateModalCard(e.target.id);
     UI.showModalCard();
   }
 });
 
-document.querySelector(`#btn-add-input`).addEventListener("click", UI.addInput);
+document
+  .querySelector(`#btn-new-add-input`)
+  .addEventListener(
+    "click",
+    UI.addInput.bind(0, document.querySelector(`#modal-new-grid`))
+  );
+
+document
+  .querySelector(`#btn-card-add-input`)
+  .addEventListener(
+    "click",
+    UI.addInput.bind(0, document.querySelector(`#modal-edit-grid`))
+  );
+
+document
+  .querySelector(`#btn-new-remove-input`)
+  .addEventListener(
+    "click",
+    UI.removeInput.bind(0, document.querySelector(`#modal-new-grid`))
+  );
+
+document
+  .querySelector(`#btn-card-remove-input`)
+  .addEventListener(
+    "click",
+    UI.removeInput.bind(0, document.querySelector(`#modal-edit-grid`))
+  );
 
 document.querySelector(`#btn-add-card`).addEventListener("click", UI.setCard);
-
-document.addEventListener("DOMContentLoaded", UI.updateCards);
