@@ -23,7 +23,7 @@ class Cards {
     localStorage.setItem("cards", JSON.stringify(cards));
   }
 
-  static removeCard(index) {
+  static deleteCard(index) {
     const cards = Cards.getCards();
     cards.splice(index, 1);
     localStorage.setItem("cards", JSON.stringify(cards));
@@ -38,11 +38,33 @@ class Cards {
 }
 
 class UI {
-  static populateModalCard(index) {
+  static populateModalCard(cardId) {
+    document.querySelector(`#btn-delete-card`).setAttribute("btn", cardId);
     const cards = Cards.getCards();
-    const card = cards[index];
+    const card = cards[cardId];
+    const cardTitle = card[0];
+    const cardFields = card[1];
+    const cardValues = card[2];
+    const cardFieldsValues = [];
 
-    console.log(card);
+    for (let index = 0; index < cardFields.length; index++) {
+      cardFieldsValues.push(cardFields[index]);
+      cardFieldsValues.push(cardValues[index]);
+    }
+
+    document.querySelector(`#modal-input-title`).value = cardTitle;
+
+    for (let i = 0; i < cardFields.length; i++) {
+      UI.addInput(document.querySelector(`#modal-edit-grid`));
+    }
+
+    const modalInputs = document.querySelectorAll(
+      `#modal-edit-grid > .modal__input`
+    );
+
+    cardFieldsValues.forEach((value, index) => {
+      modalInputs[index + 1].value = value;
+    });
   }
 
   static showOverlay() {
@@ -88,6 +110,18 @@ class UI {
     document.querySelector(`#modal-new-grid`).innerHTML = html;
   }
 
+  static resetModalEdit() {
+    const html = `
+      <input
+        type="text"
+        class="modal__input"
+        placeholder="Title"
+        id="modal-input-title"
+      />
+    `;
+    document.querySelector(`#modal-edit-grid`).innerHTML = html;
+  }
+
   static addInput(gridElement) {
     const inputField = document.createElement("input");
     const inputText = document.createElement("input");
@@ -112,7 +146,9 @@ class UI {
   }
 
   static setCard() {
-    const modalInputs = document.querySelectorAll(`.modal__input`);
+    const modalInputs = document.querySelectorAll(
+      `#modal-new-grid > .modal__input`
+    );
     const cardInputs = [];
     const fields = [];
     const values = [];
@@ -142,6 +178,13 @@ class UI {
     UI.updateCards();
     UI.closeModal();
     UI.resetModalNew();
+  }
+
+  static removeCard(event) {
+    Cards.deleteCard(event.target.attributes.btn.value);
+    UI.updateCards();
+    UI.closeModal();
+    UI.resetModalEdit();
   }
 
   static updateCards() {
@@ -213,6 +256,7 @@ window.addEventListener("click", (e) => {
   if (e.target == overlay) {
     UI.closeModal();
     UI.resetModalNew();
+    UI.resetModalEdit();
   }
 
   if (e.target.classList.contains("btn-edit")) {
@@ -250,3 +294,7 @@ document
   );
 
 document.querySelector(`#btn-add-card`).addEventListener("click", UI.setCard);
+
+document
+  .querySelector(`#btn-delete-card`)
+  .addEventListener("click", (e) => UI.removeCard(e));
