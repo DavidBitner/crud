@@ -29,6 +29,12 @@ class Cards {
     localStorage.setItem("cards", JSON.stringify(cards));
   }
 
+  static updateCard(card, index) {
+    const cards = Cards.getCards();
+    cards.splice(index, 1, card);
+    localStorage.setItem("cards", JSON.stringify(cards));
+  }
+
   static resetCards() {
     let cards = [
       ["Card Example", ["Field 1", "Field 2"], ["Value 1", "Value 2"]],
@@ -38,8 +44,12 @@ class Cards {
 }
 
 class UI {
+  constructor(currentCard) {
+    this.currentCard = currentCard;
+  }
+
   static populateModalCard(cardId) {
-    document.querySelector(`#btn-delete-card`).setAttribute("btn", cardId);
+    UI.currentCard = cardId;
     const cards = Cards.getCards();
     const card = cards[cardId];
     const cardTitle = card[0];
@@ -145,10 +155,17 @@ class UI {
     inputs[inputs.length - 1].remove();
   }
 
-  static setCard() {
-    const modalInputs = document.querySelectorAll(
+  static setCard(option = 1) {
+    let modalInputs = document.querySelectorAll(
       `#modal-new-grid > .modal__input`
     );
+
+    if (option == 2) {
+      modalInputs = document.querySelectorAll(
+        `#modal-edit-grid > .modal__input`
+      );
+    }
+
     const cardInputs = [];
     const fields = [];
     const values = [];
@@ -168,20 +185,26 @@ class UI {
 
     for (let index = 1; index < cardInputs.length; index++) {
       if (index % 2 === 1) {
-        fields.push(`${cardInputs[index]}:`);
+        fields.push(cardInputs[index]);
       } else {
         values.push(cardInputs[index]);
       }
     }
 
-    Cards.addCard([title, fields, values]);
+    if (option == 2) {
+      Cards.updateCard([title, fields, values], UI.currentCard);
+    } else {
+      Cards.addCard([title, fields, values]);
+    }
+
     UI.updateCards();
     UI.closeModal();
     UI.resetModalNew();
+    UI.resetModalEdit();
   }
 
-  static removeCard(event) {
-    Cards.deleteCard(event.target.attributes.btn.value);
+  static removeCard() {
+    Cards.deleteCard(UI.currentCard);
     UI.updateCards();
     UI.closeModal();
     UI.resetModalEdit();
@@ -252,8 +275,7 @@ document
   .addEventListener("click", UI.showModalNew);
 
 window.addEventListener("click", (e) => {
-  const overlay = document.querySelector(`.overlay`);
-  if (e.target == overlay) {
+  if (e.target == document.querySelector(`.overlay`)) {
     UI.closeModal();
     UI.resetModalNew();
     UI.resetModalEdit();
@@ -297,4 +319,8 @@ document.querySelector(`#btn-add-card`).addEventListener("click", UI.setCard);
 
 document
   .querySelector(`#btn-delete-card`)
-  .addEventListener("click", (e) => UI.removeCard(e));
+  .addEventListener("click", UI.removeCard);
+
+document
+  .querySelector(`#btn-save-card`)
+  .addEventListener("click", UI.setCard.bind(0, 2));
