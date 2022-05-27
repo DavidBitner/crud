@@ -10,7 +10,7 @@ class Cards {
   static getCards() {
     let cards;
     if (localStorage.getItem("cards") === null) {
-      cards = [];
+      cards = ["Card Example", ["Field 1", "Field 2"], ["Value 1", "Value 2"]];
     } else {
       cards = JSON.parse(localStorage.getItem("cards"));
     }
