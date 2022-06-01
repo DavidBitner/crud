@@ -14,7 +14,7 @@ class Cards {
     } else {
       cards = JSON.parse(localStorage.getItem("cards"));
     }
-    console.log(cards)
+    console.log(cards);
     return cards;
   }
 
@@ -244,7 +244,7 @@ class UI {
       const fields = card[1];
       const values = card[2];
 
-      console.log(fields, values)
+      console.log(fields, values);
 
       for (let index = 0; index < fields.length; index++) {
         const cardField = document.createElement("div");
@@ -268,7 +268,7 @@ class UI {
       cardElement.appendChild(cardBack);
       cardsContainer.appendChild(cardElement);
 
-      console.log(fields, values)
+      console.log(fields, values);
     });
   }
 }
