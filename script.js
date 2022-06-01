@@ -14,7 +14,6 @@ class Cards {
     } else {
       cards = JSON.parse(localStorage.getItem("cards"));
     }
-    console.log(cards);
     return cards;
   }
 
@@ -215,6 +214,8 @@ class UI {
     const cards = Cards.getCards();
     const cardsContainer = document.querySelector(`.cards`);
 
+    console.log(cards);
+
     cardsContainer.innerHTML = "";
 
     cards.forEach((card, index) => {
@@ -241,10 +242,10 @@ class UI {
       cardTitleFront.innerText = card[0];
       cardEditBtn.innerText = "Edit";
 
+      console.log(card);
+
       const fields = card[1];
       const values = card[2];
-
-      console.log(fields, values);
 
       for (let index = 0; index < fields.length; index++) {
         const cardField = document.createElement("div");
