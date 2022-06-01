@@ -34,13 +34,6 @@ class Cards {
     cards.splice(index, 1, card);
     localStorage.setItem("cards", JSON.stringify(cards));
   }
-
-  static resetCards() {
-    let cards = [
-      ["Card Example", ["Field 1", "Field 2"], ["Value 1", "Value 2"]],
-    ];
-    localStorage.setItem("cards", JSON.stringify(cards));
-  }
 }
 
 class UI {
@@ -239,8 +232,6 @@ class UI {
       cardTitleBack.innerText = card[0];
       cardTitleFront.innerText = card[0];
       cardEditBtn.innerText = "Edit";
-
-      console.log(card);
 
       const fields = card[1];
       const values = card[2];
