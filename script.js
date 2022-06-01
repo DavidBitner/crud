@@ -214,8 +214,6 @@ class UI {
     const cards = Cards.getCards();
     const cardsContainer = document.querySelector(`.cards`);
 
-    console.log(cards);
-
     cardsContainer.innerHTML = "";
 
     cards.forEach((card, index) => {
@@ -268,8 +266,6 @@ class UI {
       cardElement.appendChild(cardFront);
       cardElement.appendChild(cardBack);
       cardsContainer.appendChild(cardElement);
-
-      console.log(fields, values);
     });
   }
 }
